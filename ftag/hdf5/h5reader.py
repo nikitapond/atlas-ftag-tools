@@ -270,10 +270,20 @@ class H5Reader:
 
                 # if equal_jets is False, we need to keep going until all streams are done
                 if all(streams_done):
-                    return
+                    return                
 
-            # combine samples and shuffle
-            data = {name: np.concatenate([s[name] for s in samples]) for name in variables}
+            try:
+                # for name in variables:
+                if all(variables[name] for name in variables):
+                    # combine samples and shuffle
+                    data = {name: np.concatenate([s[name][list(set(variables[name]))] for s in samples]) for name in variables}
+                else:
+                    data = {name: np.concatenate([s[name] for s in samples]) for name in variables}
+            except ValueError as e:
+                raise ValueError("An issue occured combining data from different file streams."\
+                        "This is likely due to attempting to combine samples of different versions, "\
+                        "for the evaluation file. Instead, produce each test file for each sample seperatley") from e
+
             if self.shuffle:
                 idx = np.arange(len(data[self.jets_name]))
                 rng.shuffle(idx)
