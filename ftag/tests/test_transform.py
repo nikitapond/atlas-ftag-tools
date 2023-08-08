@@ -55,6 +55,35 @@ def variable_map():
         },
     }
 
+@pytest.fixture
+def insert_vars():
+    return {
+        "group1" : {
+            "var_insert1" : 1.0,
+            "var_insert2" : 1,
+        },
+        "group2" : {
+            "var_insert3" : 1.0,
+        },
+        "group3" : {
+            "var_insert4" : False,
+            "var_insert5" : True,
+        }
+
+    }
+
+def test_insert_variables(sample_batch, insert_vars):
+    transform = Transform(insert_vars=insert_vars)
+    transformed_batch = transform.insert_variables(sample_batch)
+    assert all(transformed_batch["group1"]["var1"] != 0)
+    assert all(transformed_batch["group1"]["var2"] != 0)
+    assert all(transformed_batch["group2"]["var3"] != 0)
+    assert all(transformed_batch["group2"]["var4"] != 0)
+    assert transformed_batch["group1"]["var_insert1"].tolist() == [1.0, 1.0]
+    assert transformed_batch["group1"]["var_insert2"].tolist() == [1, 1]
+    assert transformed_batch["group2"]["var_insert3"].tolist() == [1.0, 1.0]
+    assert transformed_batch["group3"]["var_insert4"].tolist() == [False, False]
+    assert transformed_batch["group3"]["var_insert5"].tolist() == [True, True]
 
 def test_map_ints(sample_batch, ints_map):
     transform = Transform(ints_map=ints_map)
