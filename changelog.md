@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Added `h5add_col` to aid in adding new columns to h5 files [#121](https://github.com/umami-hep/atlas-ftag-tools/pull/121)
 - Fixing Issues in the Imports & Update Docs [#120](https://github.com/umami-hep/atlas-ftag-tools/pull/120)
 - Updating new Sphinx Docs [#119](https://github.com/umami-hep/atlas-ftag-tools/pull/119)
 - Adding new Sphinx Docs [#118](https://github.com/umami-hep/atlas-ftag-tools/pull/118)
